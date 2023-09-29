@@ -8,10 +8,9 @@ const { headline } = props.blok;
 </script>
 
 <template>
-  <div
-    v-editable="blok"
-    class="py-32 text-6xl text-[#50b0ae] font-bold text-center"
-  >
+  <h1 v-editable="blok">
     {{ headline }}
-  </div>
+  </h1>
 </template>
+
+<style src="./style.scss" lang="scss" scoped></style>
