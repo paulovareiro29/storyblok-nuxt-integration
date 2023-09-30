@@ -18,35 +18,17 @@ export default defineNuxtConfig({
   ],
   hooks: {
     async "nitro:config"(nitroConfig) {
-      if (!nitroConfig || nitroConfig.dev) {
-        return;
-      }
-      const token = process.env.STORYBLOK_TOKEN;
+      if (!nitroConfig || nitroConfig.dev) return;
 
-      let cache_version = 0;
+      const cacheVersion = await StoryblokService.getLatestCacheVersion();
 
-      // other routes that are not in Storyblok with their slug.
-      let routes = ["/"]; // adds home directly but with / instead of /home
-      try {
-        const result = await fetch(
-          `https://api.storyblok.com/v2/cdn/spaces/me?token=${token}`
-        );
+      const routes = [
+        "/",
+        ...(await StoryblokService.fetchAllRoutes(cacheVersion)),
+      ];
 
-        if (!result.ok) {
-          throw new Error("Could not fetch Storyblok data");
-        }
-        // timestamp of latest publish
-        const space = await result.json();
-
-        cache_version = space.space.version;
-
-        await StoryblokService.fetchStories(routes, cache_version);
-
-        // @ts-ignore
-        nitroConfig.prerender.routes.push(...routes);
-      } catch (error) {
-        console.error(error);
-      }
+      // @ts-ignore
+      nitroConfig.prerender.routes.push(...routes);
     },
   },
 });
