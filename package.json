@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
-    "generate": "nuxt generate",
+    "dev": "nuxt dev --dotenv \"./configuration/.env.local\" --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
+    "generate": "nuxt generate --dotenv \"./configuration/.env.prod\"",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",

@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
       const cacheVersion = await StoryblokService.getLatestCacheVersion();
 
-      const routes = [
+      const routes: string[] = [
         "/",
         ...(await StoryblokService.fetchAllRoutes(cacheVersion)),
       ];
