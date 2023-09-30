@@ -4,12 +4,11 @@ export interface Teaser extends Blok {
 }
 
 const props = defineProps<{ blok: Teaser }>();
-const { headline } = props.blok;
 </script>
 
 <template>
   <h1 v-editable="blok">
-    {{ headline }}
+    {{ props.blok.headline }}
   </h1>
 </template>
 

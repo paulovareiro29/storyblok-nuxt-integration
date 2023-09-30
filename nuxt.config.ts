@@ -1,7 +1,7 @@
-import { StoryblokService } from "./services/Storyblok";
+import { StoryblokService } from "./services/storyblok";
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   ssr: true,
   components: {
     global: true,

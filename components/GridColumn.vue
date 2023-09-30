@@ -5,16 +5,15 @@ export interface GridColum extends Blok {
 }
 
 const props = defineProps<{ blok: GridColum }>();
-const { span, body } = props.blok;
 </script>
 
 <template>
-  <div v-editable="blok" :class="`col-span-${span}`">
+  <div v-editable="blok" :class="`col-span-${props.blok.span}`">
     <StoryblokComponent
-      :is="blok.component"
-      v-for="blok in body"
-      :key="blok._uid"
-      :blok="blok"
+      :is="_blok.component"
+      v-for="_blok in props.blok.body"
+      :key="_blok._uid"
+      :blok="_blok"
     />
   </div>
 </template>

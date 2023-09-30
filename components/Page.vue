@@ -4,16 +4,15 @@ export interface Page extends Blok {
 }
 
 const props = defineProps<{ blok: Page }>();
-const { body } = props.blok;
 </script>
 
 <template>
   <div v-editable="blok" class="px-4">
     <StoryblokComponent
-      :is="blok.component"
-      v-for="blok in body"
-      :key="blok._uid"
-      :blok="blok"
+      :is="_blok.component"
+      v-for="_blok in props.blok.body"
+      :key="_blok._uid"
+      :blok="_blok"
     />
   </div>
 </template>

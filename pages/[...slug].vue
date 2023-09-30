@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { StoryblokService } from "~/services/Storyblok";
+import { StoryblokService } from "~/services/storyblok";
 const { slug } = useRoute().params;
 
 const story = await useAsyncStoryblok(
   slug && slug.length > 0 ? (slug as []).join("/") : "home",
-  { version: "published", cv: +new Date() }
+  { version: "published", cv: +new Date() },
 );
 </script>
 

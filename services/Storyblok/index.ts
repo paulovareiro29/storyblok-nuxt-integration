@@ -1,35 +1,61 @@
+import components from "./components";
+
+const STORYBLOK_TOKEN = process.env.STORYBLOK_TOKEN;
+const API_URL = "https://api.storyblok.com/v2/";
+
 const RoutesToIgnore: string[] = [];
 
-const ComponentsMapping: Record<string, string> = {};
-
 export const StoryblokService = {
-  async fetchStories(routes: string[], cacheVersion: number, page: number = 1) {
-    const token = process.env.STORYBLOK_TOKEN;
+  async getLatestCacheVersion(): Promise<number> {
+    const result = await fetch(
+      `${API_URL}cdn/spaces/me?token=${STORYBLOK_TOKEN}`,
+    );
+
+    if (!result.ok) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to fetch Storyblok latest cache version");
+      return +new Date();
+    }
+
+    const space = await result.json();
+    return space.space.version;
+  },
+  async fetchAllRoutes(
+    cacheVersion: number,
+    page: number = 1,
+  ): Promise<string[]> {
     const version = "published";
     const perPage = 100;
 
+    const routes: string[] = [];
+
     try {
       const response = await fetch(
-        `https://api.storyblok.com/v2/cdn/links?token=${token}&version=${version}&per_page=${perPage}&page=${page}&cv=${cacheVersion}`
+        `${API_URL}cdn/links?token=${STORYBLOK_TOKEN}&version=${version}&per_page=${perPage}&page=${page}&cv=${cacheVersion}`,
       );
       const data = await response.json();
 
-      // Add routes to the array
       Object.values(data.links).forEach((link: any) => {
         if (!RoutesToIgnore.includes(link.slug) && !link.is_folder) {
           routes.push(link.real_path);
         }
       });
 
-      // Check if there are more pages with links
       const total = parseInt(response.headers.get("total") || "0");
       const maxPage = Math.ceil(total / perPage);
 
       if (maxPage > page) {
-        await StoryblokService.fetchStories(routes, cacheVersion, ++page);
+        return [
+          ...routes,
+          ...(await StoryblokService.fetchAllRoutes(cacheVersion, ++page)),
+        ];
       }
+
+      return routes;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
+      return [];
     }
   },
   isComponent(blok: any): boolean {
@@ -54,7 +80,7 @@ export const StoryblokService = {
         const parsed = value.map((blok: Blok) => {
           if (!this.isComponent(blok)) return blok;
 
-          const mappedComponent = ComponentsMapping[blok.component as string];
+          const mappedComponent = components[blok.component as string];
 
           if (mappedComponent) {
             blok.original_component = blok.component;
@@ -66,7 +92,7 @@ export const StoryblokService = {
 
         return { ...accumulator, [key]: parsed };
       },
-      {}
+      {},
     );
   },
 };
