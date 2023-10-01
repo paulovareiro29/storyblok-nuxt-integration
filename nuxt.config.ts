@@ -1,3 +1,4 @@
+import { defineNuxtConfig } from "nuxt/config";
 import { StoryblokService } from "./services/storyblok";
 
 const env = process.env.NODE_ENV || "dev";
