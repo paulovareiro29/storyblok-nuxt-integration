@@ -1,8 +1,12 @@
 import { StoryblokService } from "./services/storyblok";
 
+const env = process.env.NODE_ENV || "dev";
+const ignore = env === "production" ? ["pages/editor.vue"] : undefined;
+
 export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
+  ignore,
   components: {
     global: true,
     dirs: ["~/components"],

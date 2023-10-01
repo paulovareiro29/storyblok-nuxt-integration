@@ -8,7 +8,7 @@ const props = defineProps<{ blok: GridColum }>();
 </script>
 
 <template>
-  <div v-editable="blok" :class="`col-span-${props.blok.span}`">
+  <div v-editable="props.blok" :class="`col-span-${props.blok.span}`">
     <StoryblokComponent
       :is="_blok.component"
       v-for="_blok in props.blok.body"

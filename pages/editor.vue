@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { StoryblokService } from "~/services/storyblok";
+
 const { path } = useRoute().query;
 
 const slug = (path as string)?.replace("/", "");
@@ -10,5 +12,8 @@ const story = await useAsyncStoryblok(slug && slug.length > 0 ? slug : "home", {
 </script>
 
 <template>
-  <StoryblokComponent v-if="story" :blok="story.content" />
+  <StoryblokComponent
+    v-if="story"
+    :blok="StoryblokService.parseComponent(story.content)"
+  />
 </template>

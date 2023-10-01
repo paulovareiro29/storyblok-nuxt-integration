@@ -7,7 +7,7 @@ const props = defineProps<{ blok: Teaser }>();
 </script>
 
 <template>
-  <h1 v-editable="blok">
+  <h1 v-editable="props.blok">
     {{ props.blok.headline }}
   </h1>
 </template>

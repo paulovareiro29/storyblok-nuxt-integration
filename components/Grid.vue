@@ -9,7 +9,7 @@ const props = defineProps<{ blok: Grid }>();
 </script>
 
 <template>
-  <div v-editable="blok" class="container mx-auto grid grid-cols-12">
+  <div v-editable="props.blok" class="container mx-auto grid grid-cols-12">
     <StoryblokComponent
       v-for="_blok in props.blok.columns"
       :key="_blok._uid"
