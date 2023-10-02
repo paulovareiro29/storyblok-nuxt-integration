@@ -7,6 +7,7 @@
     "dev": "nuxt dev --dotenv \"./configuration/.env.local\" --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
     "generate": "nuxt generate --dotenv \"./configuration/.env.prod\"",
     "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "lint": "npm run lint:js && npm run lint:prettier",
     "lint:js": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
